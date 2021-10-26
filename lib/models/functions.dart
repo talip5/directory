@@ -16,9 +16,13 @@ class Functions {
   String dirSingle = '';
   String fileSingle = '';
 
-
   oku() {
     print('Oku');
+  }
+
+  Directory localPathDirectory(){
+   Directory directory = Directory("storage/emulated/0/Android/data/com.example.directory/files");
+    return directory;
   }
 
   String localPathDeneme3(){

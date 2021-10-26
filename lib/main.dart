@@ -22,8 +22,11 @@ class myApp extends StatefulWidget {
 }
 
 class _myAppState extends State<myApp> {
-
+  String titleDirectoryName = 'Directory Name';
   String textClass = 'textClass';
+  String dirSingle = '';
+  String fileSingle = '';
+  Directory? directory1;
 
   //String initialValue = 'Kevin A.';
   /* TextEditingController controller = new TextEditingController(
@@ -52,8 +55,18 @@ class _myAppState extends State<myApp> {
   int counter = 1;
   String fileOrDirx = 'fileOrDir';
 
-  void yaz() {
-    print('textEditCompletioned');
+  void yaz() async{
+    //print('textEditCompletioned');
+    //directory1 = widget.functions.localPathDirectory();
+    directory1=await getExternalStorageDirectory();
+   // List list5=directory1!.listSync();
+    //print(list5.length);
+    print(directory1);
+    String dirxPath = directory1!.path;
+    String directorytitle = dirxPath.split('/').last;
+    setState(() {
+      titleDirectoryName = 'Directory Name : $directorytitle';
+    });
   }
 
   colorTextEdit() {
@@ -67,36 +80,46 @@ class _myAppState extends State<myApp> {
     return MaterialApp(
       title: 'xxx',
       home: Scaffold(
-        appBar: AppBar(title: Text('File')),
+        appBar: AppBar(title: Text(titleDirectoryName)),
         body: Center(
           child: Column(
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: widget.contents1.length,
-                    itemBuilder: (BuildContext context,int index){
-                    if(widget.contents1[index] is Directory){
-                      return ListTile(
-                        leading: Icon(Icons.folder),
-                        title: Text(widget.contents1[index].toString()),
-                      );
-                    }
-                    if(widget.contents1[index] is File){
-                      return ListTile(
-                        leading: Icon(Icons.file_present),
-                        title: Text(widget.contents1[index].toString()),
-                      );
-                    }
-                    return Text('bos');
-                // return Text(widget.contents1[index].toString());
-                    }
-                    ),
+                    itemCount: widget.contents1.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (widget.contents1[index] is Directory) {
+                        Directory? dirContents = widget.contents1[index];
+                        String dirName1 = dirContents!.path;
+                        dirSingle = dirName1.split('/').last;
+                        return ListTile(
+                          leading: Icon(Icons.folder),
+                          // title: Text(widget.contents1[index].toString()),
+                          title: Text(dirSingle),
+                        );
+                      }
+                      if (widget.contents1[index] is File) {
+                        File? fileContents = widget.contents1[index];
+                        String fileName1 = fileContents!.path;
+                        fileSingle = fileName1.split('/').last;
+                        return ListTile(
+                          leading: Icon(Icons.file_present),
+                          //title: Text(widget.contents1[index].toString()),
+                          title: Text(fileSingle),
+                        );
+                      }
+                      return Text('bos');
+                      // return Text(widget.contents1[index].toString());
+                    }),
               ),
               Text(textClass),
               ElevatedButton(
                   onPressed: () async {
+                    yaz();
                     //textClass = widget.functions.localPathDeneme3();
-                    widget.contents1= await widget.functions.localPathDirList();
+                    widget.contents1 =
+                        await widget.functions.localPathDirList();
+                    //var dirSingle5 = dirName5.split('/').elementAt(3);
                     //textClass=widget.contents1.length.toString();
                     setState(() {
                       textClass;
@@ -104,6 +127,20 @@ class _myAppState extends State<myApp> {
                     print('Dir Deneme');
                   },
                   child: Text('Dir Deneme')),
+              ElevatedButton(
+                  onPressed: () async {
+                    yaz();
+                    /*Directory dirx = yaz()!;
+                    String dirxPath = dirx.path;
+                    String directorytitle = dirxPath.split('/').last;
+                    setState(() {
+                      titleDirectoryName = directorytitle;
+                    });
+                    print('Deneme');
+                    print(dirx);
+                    print(directorytitle);*/
+                  },
+                  child: Text('Deneme')),
               /*ElevatedButton(
                   onPressed: () async {
                     //await widget._localPathDirList();
